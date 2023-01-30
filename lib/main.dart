@@ -37,7 +37,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final double horizontalPadding = 40;
   final double verticalPadding = 25;
 
-  bool? status = true;
+  bool? status = false;
 
   //List of Smart Devices
   List mySmartDevices = [
