@@ -1,4 +1,9 @@
+import 'dart:math';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:smart_home/widget.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,6 +15,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        primaryColor: Colors.black,
+      ),
       title: 'Smart Home',
       home: const MyHomePage(title: 'Smart Home UI'),
     );
@@ -30,27 +38,27 @@ class _MyHomePageState extends State<MyHomePage> {
   final double verticalPadding = 25;
 
   //List of Smart Devices
-  List mySmartDevices = [];
+  List mySmartDevices = [
+    ["Smart Light", "images/light-bulb.png", true],
+    ["Smart AC", "images/air-conditioner.png", true],
+    ["Smart TV", "images/smart-tv.png", false],
+    ["Smart Fan", "images/fan.png", false],
+  ];
+  //function to toggle the swtich
+  void powerSwitchedToggled(bool value, int index) {
+    setState(() {
+      mySmartDevices[index][2] = value;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text(widget.title),
-      // ),
-      // body: Center(
-      //   child: Column(
-      //     mainAxisAlignment: MainAxisAlignment.center,
-      //     children: <Widget>[
-      //       const Text(
-      //         'You have pushed the button this many times:',
-      //       ),
-      //     ],
-      //   ),
-      // ),
-      body: Column(
-          //crossAxisAlignment: CrossAxisAlignment.stretch,
+      body: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            //custome app bar with 2 top icons
+            //custom app bar with 2 top icons
             Padding(
               padding: EdgeInsets.symmetric(
                 horizontal: horizontalPadding,
@@ -61,7 +69,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 children: [
                   // menu icon
                   Image.asset(
-                    'lib/icons/menu.png',
+                    'images/menu.png',
                     height: 45,
                     color: Colors.grey[800],
                   ),
@@ -76,9 +84,24 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
 
-            SizedBox(height: 20),
-            Text("Welcome Home"),
-            Text(" Peter"),
+            const SizedBox(height: 20),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Welcome Home",
+                    style: TextStyle(fontSize: 20, color: Colors.grey.shade800),
+                  ),
+                  Text(
+                    "Peter",
+                    style: GoogleFonts.bebasNeue(fontSize: 72),
+                  ),
+                ],
+              ),
+            ),
+
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 40.0),
               child: Divider(
@@ -86,7 +109,50 @@ class _MyHomePageState extends State<MyHomePage> {
                 color: Color.fromARGB(255, 204, 204, 204),
               ),
             ),
-          ]),
+
+            const SizedBox(height: 25),
+
+            // smart devices grid
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+              child: Text(
+                "Smart Devices",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 24,
+                  color: Colors.grey.shade800,
+                ),
+              ),
+            ),
+            const SizedBox(height: 25),
+            // smart devices grid
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: GridView.builder(
+                  itemCount: mySmartDevices.length,
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    //crossAxisSpacing: 15,
+                    mainAxisSpacing: 15,
+                    childAspectRatio: 1 / 1.3,
+                  ),
+                  itemBuilder: (context, index) {
+                    return SmartBox(
+                        smartDeviceName: mySmartDevices[index][0],
+                        iconPath: mySmartDevices[index][1],
+                        powerStatus: mySmartDevices[index][2],
+                        onChanged: (value) {
+                          powerSwitchedToggled(value, index);
+                        });
+                  },
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 }
