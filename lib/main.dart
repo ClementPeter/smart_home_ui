@@ -37,17 +37,45 @@ class _MyHomePageState extends State<MyHomePage> {
   final double horizontalPadding = 40;
   final double verticalPadding = 25;
 
+  bool? status = true;
+
   //List of Smart Devices
   List mySmartDevices = [
-    ["Smart Light", "images/light-bulb.png", true],
-    ["Smart AC", "images/air-conditioner.png", true],
-    ["Smart TV", "images/smart-tv.png", false],
+    ["Smart Light", "images/light-bulb.png", false],
+    ["Smart AC", "images/air-conditioner.png", false],
+    ["Smart TV", "images/smart-tv.png", true],
     ["Smart Fan", "images/fan.png", false],
   ];
   //function to toggle the swtich
   void powerSwitchedToggled(bool value, int index) {
     setState(() {
       mySmartDevices[index][2] = value;
+    });
+  }
+
+  void mainPowerToggledOn() {
+    setState(() {
+      print(mySmartDevices[1][2]);
+      status = true;
+      mySmartDevices[0][2] = status;
+      mySmartDevices[1][2] = status;
+      mySmartDevices[2][2] = status;
+      mySmartDevices[3][2] = status;
+
+      // mySmartDevices[2] = value;
+    });
+  }
+
+  void mainPowerToggledOff() {
+    setState(() {
+      print(mySmartDevices[1][2]);
+      status = false;
+      mySmartDevices[0][2] = false;
+      mySmartDevices[1][2] = false;
+      mySmartDevices[2][2] = false;
+      mySmartDevices[3][2] = false;
+
+      // mySmartDevices[2] = value;
     });
   }
 
@@ -70,14 +98,28 @@ class _MyHomePageState extends State<MyHomePage> {
                   // menu icon
                   Image.asset(
                     'images/menu.png',
-                    height: 45,
+                    height: 40,
                     color: Colors.grey[800],
+                  ),
+                  InkWell(
+                    borderRadius: BorderRadius.circular(10),
+                    onTap: () {
+                      return mainPowerToggledOn();
+                    },
+                    onDoubleTap: () {
+                      return mainPowerToggledOff();
+                    },
+                    child: Icon(
+                      Icons.bolt,
+                      color: status! ? Colors.green : Colors.grey,
+                      size: 80,
+                    ),
                   ),
 
                   // account icon
                   Icon(
                     Icons.person,
-                    size: 45,
+                    size: 40,
                     color: Colors.grey[800],
                   )
                 ],
@@ -110,7 +152,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
 
-            const SizedBox(height: 25),
+            const SizedBox(height: 20),
 
             // smart devices grid
             Padding(
@@ -124,7 +166,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
             ),
-            const SizedBox(height: 25),
+            const SizedBox(height: 15),
             // smart devices grid
             Expanded(
               child: Padding(

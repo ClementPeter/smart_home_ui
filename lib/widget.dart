@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 
 //@immutable
 class SmartBox extends StatelessWidget {
@@ -27,19 +27,27 @@ class SmartBox extends StatelessWidget {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 250),
         decoration: BoxDecoration(
-          color: powerStatus! ? Colors.green.shade400 : Colors.grey,
-          borderRadius: powerStatus!
-              ? BorderRadius.circular(35)
-              : BorderRadius.circular(5),
-          boxShadow: const [
-            BoxShadow(
-              offset: Offset(0, 17),
-              blurRadius: 23,
-              spreadRadius: -8,
-              color: Colors.grey,
-            ),
-          ],
-        ),
+            color: powerStatus! ? Colors.green.shade400 : Colors.grey,
+            borderRadius: powerStatus!
+                ? BorderRadius.circular(35)
+                : BorderRadius.circular(5),
+            boxShadow: powerStatus!
+                ? [
+                    BoxShadow(
+                      offset: const Offset(0, 17),
+                      blurRadius: 23,
+                      spreadRadius: -15,
+                      color: Colors.green.shade400,
+                    ),
+                  ]
+                : const [
+                    BoxShadow(
+                      offset: Offset(0, 17),
+                      blurRadius: 23,
+                      spreadRadius: -8,
+                      color: Colors.grey,
+                    ),
+                  ]),
         child: Column(
           //mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -69,6 +77,9 @@ class SmartBox extends StatelessWidget {
                 Transform.rotate(
                   angle: pi / 2,
                   child: CupertinoSwitch(
+                    activeColor: Colors.green.shade900,
+                    trackColor: Colors.grey.shade600,
+
                     value: powerStatus!,
                     //pass a function to change the power status
                     onChanged: onChanged,
