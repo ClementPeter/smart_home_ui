@@ -192,15 +192,6 @@ class _MyHomePageState extends State<MyHomePage> {
                     childAspectRatio: 1 / 1.3,
                   ),
                   itemBuilder: (context, index) {
-                    // return SmartBox(
-                    //   smartDeviceName: mySmartDevices[index][0],
-                    //   iconPath: mySmartDevices[index][1],
-                    //   powerStatus: mySmartDevices[index][2],
-                    //   onChanged: (value) {
-                    //     powerSwitchedToggled(value, index);
-                    //   },
-                    // );
-
                     return FlipCard(
                       direction: FlipDirection.HORIZONTAL,
                       side: CardSide.FRONT,
@@ -216,22 +207,6 @@ class _MyHomePageState extends State<MyHomePage> {
                           powerSwitchedToggled(value, index);
                         },
                       ),
-                      // back : CustomSlider(value: 2.0, onChanged: (value){print("hello");},),
-                      // back: Container(
-                      //   decoration: BoxDecoration(
-                      //     color: Color(0xFF006666),
-                      //     borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                      //   ),
-                      //   child: Column(
-                      //     mainAxisAlignment: MainAxisAlignment.center,
-                      //     children: <Widget>[
-                      //       Text('Back',
-                      //           style: Theme.of(context).textTheme.headline1),
-                      //       Text('Click here to flip front',
-                      //           style: Theme.of(context).textTheme.bodyText1),
-                      //     ],
-                      //   ),
-                      // ),
                       back: CustomSlider(
                         value: sliderValue,
                         iconPath: mySmartDevices[index][1],
