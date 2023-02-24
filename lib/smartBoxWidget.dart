@@ -2,9 +2,14 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-
 //@immutable
 class SmartBox extends StatelessWidget {
+  // final List mySmartDevices;
+  final String? smartDeviceName;
+  final String? iconPath;
+  final bool? powerStatus;
+  void Function(bool)? onChanged;
+
   SmartBox({
     Key? key,
     required this.smartDeviceName,
@@ -12,13 +17,6 @@ class SmartBox extends StatelessWidget {
     required this.powerStatus,
     this.onChanged,
   }) : super(key: key);
-
-  // final List mySmartDevices;
-  final String? smartDeviceName;
-  final String? iconPath;
-  final bool? powerStatus;
-
-  void Function(bool)? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +77,6 @@ class SmartBox extends StatelessWidget {
                   child: CupertinoSwitch(
                     activeColor: Colors.green.shade900,
                     trackColor: Colors.grey.shade600,
-
                     value: powerStatus!,
                     //pass a function to change the power status
                     onChanged: onChanged,

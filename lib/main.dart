@@ -1,9 +1,10 @@
 import 'dart:math';
-
+import 'package:flip_card/flip_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:smart_home/widget.dart';
+import 'package:smart_home/slider_widget.dart';
+import 'package:smart_home/smartBoxWidget.dart';
 
 void main() {
   runApp(const MyApp());
@@ -37,14 +38,14 @@ class _MyHomePageState extends State<MyHomePage> {
   final double horizontalPadding = 40;
   final double verticalPadding = 25;
 
-  bool? status = false;
+  bool? status = false; //main power status
 
   //List of Smart Devices
   List mySmartDevices = [
-    ["Smart Light", "images/light-bulb.png", false],
+    ["Smart Light", "images/light-bulb.png", true],
     ["Smart AC", "images/air-conditioner.png", false],
-    ["Smart TV", "images/smart-tv.png", true],
-    ["Smart Fan", "images/fan.png", false],
+    ["Smart TV", "images/smart-tv.png", false],
+    ["Smart Fan", "images/fan.png", true],
   ];
   //function to toggle the swtich
   void powerSwitchedToggled(bool value, int index) {
@@ -61,6 +62,7 @@ class _MyHomePageState extends State<MyHomePage> {
       mySmartDevices[1][2] = status;
       mySmartDevices[2][2] = status;
       mySmartDevices[3][2] = status;
+      sliderValue = 20;
 
       // mySmartDevices[2] = value;
     });
@@ -74,10 +76,19 @@ class _MyHomePageState extends State<MyHomePage> {
       mySmartDevices[1][2] = false;
       mySmartDevices[2][2] = false;
       mySmartDevices[3][2] = false;
+      sliderValue = 0;
 
       // mySmartDevices[2] = value;
     });
   }
+
+  //Slider controls
+  //double _currentSliderValue = 10;
+  double sliderValue = 20;
+
+  //void Function(bool)? onchanged;
+  //VoidCallback? onchanged;
+  ValueChanged<double>? onchanged;
 
   @override
   Widget build(BuildContext context) {
@@ -125,7 +136,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ],
               ),
             ),
-
+            //Welcome Text
             const SizedBox(height: 20),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
@@ -176,18 +187,57 @@ class _MyHomePageState extends State<MyHomePage> {
                   physics: const NeverScrollableScrollPhysics(),
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
-                    //crossAxisSpacing: 15,
+                    crossAxisSpacing: 15,
                     mainAxisSpacing: 15,
                     childAspectRatio: 1 / 1.3,
                   ),
                   itemBuilder: (context, index) {
-                    return SmartBox(
+                    // return SmartBox(
+                    //   smartDeviceName: mySmartDevices[index][0],
+                    //   iconPath: mySmartDevices[index][1],
+                    //   powerStatus: mySmartDevices[index][2],
+                    //   onChanged: (value) {
+                    //     powerSwitchedToggled(value, index);
+                    //   },
+                    // );
+
+                    return FlipCard(
+                      direction: FlipDirection.HORIZONTAL,
+                      side: CardSide.FRONT,
+                      speed: 500,
+                      onFlipDone: (status) {
+                        print(status);
+                      },
+                      front: SmartBox(
                         smartDeviceName: mySmartDevices[index][0],
                         iconPath: mySmartDevices[index][1],
                         powerStatus: mySmartDevices[index][2],
                         onChanged: (value) {
                           powerSwitchedToggled(value, index);
-                        });
+                        },
+                      ),
+                      // back : CustomSlider(value: 2.0, onChanged: (value){print("hello");},),
+                      // back: Container(
+                      //   decoration: BoxDecoration(
+                      //     color: Color(0xFF006666),
+                      //     borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                      //   ),
+                      //   child: Column(
+                      //     mainAxisAlignment: MainAxisAlignment.center,
+                      //     children: <Widget>[
+                      //       Text('Back',
+                      //           style: Theme.of(context).textTheme.headline1),
+                      //       Text('Click here to flip front',
+                      //           style: Theme.of(context).textTheme.bodyText1),
+                      //     ],
+                      //   ),
+                      // ),
+                      back: CustomSlider(
+                        value: sliderValue,
+                        iconPath: mySmartDevices[index][1],
+                        powerStatus: mySmartDevices[index][2],
+                      ),
+                    );
                   },
                 ),
               ),
